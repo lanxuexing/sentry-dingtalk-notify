@@ -22,11 +22,10 @@ URL = 'https://github.com/lanxuexing/sentry-dingtalk-notify'
 EMAIL = 'lanxuexing313wsr@163.com'
 AUTHOR = 'lanxuexing'
 REQUIRES_PYTHON = '>=3.6.13'
-VERSION = '1.0.0'
+VERSION = '1.1.1'
 
 # What packages are required for this module to be executed?
 REQUIRED = [
-    'sentry>=21.5.1',
 ]
 
 # What packages are optional?
