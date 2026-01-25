@@ -2,12 +2,13 @@ from setuptools import setup, find_packages
 
 setup(
     name='sentry-dingtalk-notify',
-    version='1.0.0',
+    version='2.0.0',
     author='lanxuexing',
-    author_email='your.email@example.com',
+    author_email='lanxuexing313wsr@163.com',
     url='https://github.com/lanxuexing/sentry-dingtalk-notify',
-    description='A Sentry plugin for sending notifications to DingTalk (DingDing).',
+    description='A sentry extension integrates DingTalk robot webhook',
     long_description=open('README.md').read(),
+    long_description_content_type='text/markdown',
     license='MIT',
     packages=find_packages(),
     install_requires=[
@@ -16,12 +17,13 @@ setup(
     ],
     entry_points={
         'sentry.plugins': [
-            'dingtalk_notify = sentry_dingtalk_notify.plugin:DingTalkPlugin',
+            'sentry_dingtalk_notify = sentry_dingtalk_notify.plugin:DingTalkPlugin',
         ],
     },
     include_package_data=True,
     zip_safe=False,
     classifiers=[
+        'License :: OSI Approved :: MIT License',
         'Intended Audience :: Developers',
         'Intended Audience :: System Administrators',
         'Operating System :: OS Independent',
@@ -32,6 +34,7 @@ setup(
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: Implementation :: CPython',
         'Framework :: Django',
     ],
 )
