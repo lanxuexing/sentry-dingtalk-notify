@@ -45,10 +45,12 @@ class DingTalkOptionsForm(forms.Form):
         required=False
     )
 
+from .__version__ import __version__
+    
 class DingTalkPlugin(NotificationPlugin):
     author = 'lanxuexing'
     author_url = 'https://github.com/lanxuexing/sentry-dingtalk-notify'
-    version = '1.0.0'
+    version = __version__
     description = 'DingTalk integration for Sentry.'
     resource_links = [
         ('Bug Tracker', 'https://github.com/lanxuexing/sentry-dingtalk-notify/issues'),

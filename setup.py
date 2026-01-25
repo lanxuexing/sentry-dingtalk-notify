@@ -1,8 +1,13 @@
-from setuptools import setup, find_packages
+import os
+
+here = os.path.abspath(os.path.dirname(__file__))
+about = {}
+with open(os.path.join(here, 'sentry_dingtalk_notify', '__version__.py')) as f:
+    exec(f.read(), about)
 
 setup(
     name='sentry-dingtalk-notify',
-    version='2.0.0',
+    version=about['__version__'],
     author='lanxuexing',
     author_email='lanxuexing313wsr@163.com',
     url='https://github.com/lanxuexing/sentry-dingtalk-notify',
