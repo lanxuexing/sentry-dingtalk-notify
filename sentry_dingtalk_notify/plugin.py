@@ -44,9 +44,22 @@ class DingTalkOptionsForm(forms.Form):
         help_text='Whether to @ all members in the group.',
         required=False
     )
+    custom_message_enabled = forms.BooleanField(
+        label='Enable Custom Message',
+        help_text='If checked, the "Custom Message Template" below will be used.',
+        required=False
+    )
+    custom_message_template = forms.CharField(
+        label='Custom Message Template',
+        widget=forms.Textarea(attrs={'class': 'span6', 'placeholder': '### {title}\n\n**Project**: {project}\n**Error**: {message}\n[View]({url})'}),
+        help_text='Markdown template. Available variables: {project}, {title}, {display_title}, {message}, {url}, {level}, {environment}, {culprit}, {project_slug}, {project_name}, {org_name}.',
+        required=False
+    )
+
 
 from .__version__ import __version__
-    
+
+
 class DingTalkPlugin(NotificationPlugin):
     author = 'lanxuexing'
     author_url = 'https://github.com/lanxuexing/sentry-dingtalk-notify'
@@ -86,6 +99,8 @@ class DingTalkPlugin(NotificationPlugin):
         custom_keyword = self.get_option('custom_keyword', group.project) or ''
         at_mobiles_str = self.get_option('at_mobiles', group.project) or ''
         is_at_all = self.get_option('is_at_all', group.project) or False
+        custom_message_enabled = self.get_option('custom_message_enabled', group.project) or False
+        custom_message_template = self.get_option('custom_message_template', group.project) or ''
 
         logger.info(f"DingTalk notify_users called for event {event.event_id}")
 
@@ -143,29 +158,51 @@ class DingTalkPlugin(NotificationPlugin):
 
         link = self.get_group_url(group)
         
-        # Markdown Content
-        # Using a list style for better readability
-        text = f"### {evt_title}\n\n"
-        
-        # Key Metadata
-        text += f"- **📦 Project**: {project_slug} ({org_name})\n"
-        text += f"- **🌍 Env**: {environment}\n"
-        text += f"- **🚦 Level**: {level}\n"
-        text += f"- **📍 Location**: `{culprit}`\n"
-        
-        # Error Message (Quote block)
-        if evt_message and evt_message != evt_title:
-            text += f"\n> {evt_message}\n\n"
-        else:
-            text += "\n"
+        # Determine Markdown Content
+        text = ""
+        used_custom = False
 
-        # Trigger Context
-        if triggering_rules:
-            text += f"📢 **Trigger**: {', '.join(triggering_rules)}\n"
-            
-        # Action Link
-        text += f"\n[👉 View Issue on Sentry]({link})\n"
+        if custom_message_enabled and custom_message_template:
+            # Prepare context for custom template
+            context = {
+                'project': project_name,        # Human readable name
+                'project_name': project_name,   # Alias
+                'project_slug': project_slug,   # Technical slug
+                'org_name': org_name,
+                'title': evt_title,
+                'display_title': display_title, # Title with keyword prefix 【Keyword】
+                'message': evt_message,
+                'url': link,
+                'level': level,
+                'environment': environment,
+                'culprit': culprit,
+            }
+            try:
+                text = custom_message_template.format(**context)
+                used_custom = True
+                logger.info("DingTalk: Used custom message template.")
+            except Exception as e:
+                logger.error(f"DingTalk: Error formatting custom template: {e}. Falling back to default.")
+                text = "" # Fallback logic below will handle empty text
         
+        if not text:
+            # Standard Default Template
+            text = f"### {evt_title}\n\n"
+            text += f"- **📦 Project**: {project_slug} ({org_name})\n"
+            text += f"- **🌍 Env**: {environment}\n"
+            text += f"- **🚦 Level**: {level}\n"
+            text += f"- **📍 Location**: `{culprit}`\n"
+            
+            if evt_message and evt_message != evt_title:
+                text += f"\n> {evt_message}\n\n"
+            else:
+                text += "\n"
+
+            if triggering_rules:
+                text += f"📢 **Trigger**: {', '.join(triggering_rules)}\n"
+                
+            text += f"\n[👉 View Issue on Sentry]({link})\n"
+            
         # Append @ mentions to text so they are visually highlighted
         if at_mobiles:
              at_text = ' '.join([f"@{m}" for m in at_mobiles])

@@ -26,6 +26,7 @@ A Sentry extension to post notifications to DingTalk (钉钉) robot.
 > *   **🚦 Level**: error
 > *   **📍 Location**: `app/utils/math.js`
 >
+> 📢 **Trigger**: alert-rule  
 > [👉 View Issue on Sentry](#)
 
 ## ✨ 核心功能
@@ -71,7 +72,7 @@ A Sentry extension to post notifications to DingTalk (钉钉) robot.
 
 ## ⚙️ 配置手册
 
-进入 **Sentry > Project Settings > Legacy Integrations > DingTalk**。
+进入 **Sentry > Project Settings > Legacy Integrations > DingTalk Notify**。
 
 ### 1. Access Token (必填)
 钉钉机器人 Webhook URL 中的 `access_token` 参数。
@@ -101,6 +102,29 @@ A Sentry extension to post notifications to DingTalk (钉钉) robot.
 ### 4. At Mobiles / @手机号 (可选)
 需要 @ 的群成员手机号。
 *   **格式**: 英文逗号分隔，例如 `13800000000,13900000000`。
+
+### 5. Custom Message / 自定义消息模版 (v2.1.0+)
+支持使用 Markdown 自定义消息格式。勾选 "Enable Custom Message" 后填入由变量组成的模版。
+
+**可用变量**:
+*   `{project}`: 项目名 (e.g. sentry-demo)
+*   `{title}`: 异常标题 (e.g. ValueError)
+*   `{message}`: 异常详情
+*   `{url}`: 报错详情页链接
+*   `{level}`: 报错级别 (error/info)
+*   `{environment}`: 环境 (prod/dev)
+*   `{culprit}`: 异常位置 (code path)
+*   `{display_title}`: 包含关键词前缀的标题 (推荐使用，用于通过关键词验证)
+
+**模版示例**:
+```markdown
+### {display_title}
+**环境**: {environment}
+**位置**: `{culprit}`
+> {message}
+[👉查看详情]({url})
+```
+*(注意：钉钉 Markdown 换行需在行尾加两个空格，或使用列表格式)*
 
 ---
 

@@ -27,6 +27,7 @@ A Sentry extension to post notifications to DingTalk (钉钉) robot.
 > *   **🚦 Level**: error
 > *   **📍 Location**: `app/utils/math.js`
 >
+> 📢 **Trigger**: alert-rule  
 > [👉 View Issue on Sentry](#)
 
 ## ✨ Features
@@ -72,7 +73,7 @@ Quickly install without rebuilding images. **Note: The plugin will disappear if 
 
 ## ⚙️ Configuration Guide
 
-Go to **Sentry > Project Settings > Legacy Integrations > DingTalk**.
+Go to **Sentry > Project Settings > Legacy Integrations > DingTalk Notify**.
 
 ### 1. Access Token (Required)
 The access token for your DingTalk robot. You can find this in the Webhook URL: `https://oapi.dingtalk.com/robot/send?access_token=YOUR_TOKEN`.
@@ -104,6 +105,29 @@ If your robot uses "Keyword" security verification.
 ### 4. At Mobiles (Optional)
 Comma-separated list of mobile numbers to @ in the group chat.
 *   **Example**: `13800000000,13900000000`
+
+### 5. Custom Message / Template (v2.1.0+)
+Supports custom Markdown message format. Check "Enable Custom Message" and define your template using variables.
+
+**Available Variables**:
+*   `{project}`: Project Name (e.g. sentry-demo)
+*   `{title}`: Exception Type (e.g. ValueError)
+*   `{message}`: Error Details
+*   `{url}`: Link to Sentry Issue
+*   `{level}`: Error Level (error/info)
+*   `{environment}`: Environment (prod/dev)
+*   `{culprit}`: Code Location (file path)
+*   `{display_title}`: Title with keyword prefix, use this for keyword validation robots.
+
+**Example Template**:
+```markdown
+### {display_title}
+**Env**: {environment}
+**Location**: `{culprit}`
+> {message}
+[👉View Issue]({url})
+```
+*(Note: DingTalk Markdown requires **two spaces** at the end of a line for a line break)*
 
 ---
 
