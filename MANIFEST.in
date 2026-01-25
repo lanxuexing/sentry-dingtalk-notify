@@ -1,2 +1,2 @@
-include setup.py README.md README_zh-CN.md MANIFEST.in
+include setup.py README.md README_en.md MANIFEST.in
 global-exclude *~
