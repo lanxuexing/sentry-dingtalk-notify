@@ -11,7 +11,9 @@ A Sentry extension to post notifications to DingTalk (钉钉) robot.
 [![Python Versions](https://img.shields.io/pypi/pyversions/sentry-dingtalk-notify.svg?style=flat-square&logo=python&logoColor=white)](https://pypi.org/project/sentry-dingtalk-notify)
 [![License](https://img.shields.io/github/license/lanxuexing/sentry-dingtalk-notify.svg?style=flat-square)](https://github.com/lanxuexing/sentry-dingtalk-notify/blob/main/LICENSE)
 
-</div>
+<p align="center">
+  <a href="./README.md">English</a> | <a href="./README_zh-CN.md">简体中文</a>
+</p>
 
 </div>
 
