@@ -149,6 +149,6 @@ Sentry 默认的告警规则通常是：
 
 ## 🤝 贡献与开发
 
-欢迎提交 PR！本地开发调试请参考 [本地开发指南](LOCAL_DEV_GUIDE_zh-CN.md)。
+欢迎提交 PR！本地开发调试请参考 [本地开发指南](docs/LOCAL_DEV_GUIDE_zh-CN.md)。
 
 

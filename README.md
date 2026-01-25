@@ -151,6 +151,6 @@ Don't want to change rules?
 
 ## 🤝 Contributing
 
-Pull requests are welcome! Check out `LOCAL_DEV_GUIDE.md` for how to develop locally.
+Pull requests are welcome! Check out [`docs/LOCAL_DEV_GUIDE.md`](docs/LOCAL_DEV_GUIDE.md) for how to develop locally.
 
 
